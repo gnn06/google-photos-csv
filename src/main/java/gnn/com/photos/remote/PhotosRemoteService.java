@@ -3,10 +3,7 @@ package gnn.com.photos.remote;
 import com.google.common.collect.ImmutableList;
 import com.google.photos.library.v1.PhotosLibraryClient;
 import com.google.photos.library.v1.internal.InternalPhotosLibraryClient;
-import com.google.photos.library.v1.proto.Album;
-import com.google.photos.library.v1.proto.BatchGetMediaItemsResponse;
-import com.google.photos.library.v1.proto.MediaItem;
-import com.google.photos.library.v1.proto.MediaItemResult;
+import com.google.photos.library.v1.proto.*;
 
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
@@ -33,7 +30,8 @@ public class PhotosRemoteService {
     private String SEPARATOR = ",";
 
     public void getAllPhotos(PrintStream outputFile) {
-        InternalPhotosLibraryClient.ListMediaItemsPagedResponse response = client.listMediaItems();
+        ListMediaItemsRequest args = ListMediaItemsRequest.newBuilder().setPageSize(100).build();
+        InternalPhotosLibraryClient.ListMediaItemsPagedResponse response = client.listMediaItems(args);
         int count = 0;
         for (MediaItem item : response.iterateAll()) {
             String line = "";
